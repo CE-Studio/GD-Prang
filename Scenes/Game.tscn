@@ -1,0 +1,290 @@
+[gd_scene load_steps=17 format=3 uid="uid://o2jlr3lgtito"]
+
+[ext_resource type="Texture2D" uid="uid://bgwkte3ircfq" path="res://Textures/Sprites.png" id="1_3nuks"]
+[ext_resource type="Script" path="res://Scripts/Prang.gd" id="1_61c7t"]
+[ext_resource type="FontFile" uid="uid://crc4c6vgi1y7w" path="res://Fonts/8-bit-pusab.ttf" id="1_h3btc"]
+[ext_resource type="Script" path="res://Scripts/Game.gd" id="1_lbh5u"]
+[ext_resource type="Script" path="res://Scripts/SpriteToPixelGrid.gd" id="3_04cr7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hwqgf"]
+size = Vector2(36, 36)
+
+[sub_resource type="Animation" id="Animation_8xnoe"]
+resource_name = "Idle"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_8yoas"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 0, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_u2cvx"]
+resource_name = "Move"
+length = 0.5
+loop_mode = 1
+step = 0.125
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.125, 0.25, 0.375),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [1, 2, 1, 0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_lfenw"]
+resource_name = "Die"
+length = 0.6
+step = 0.025
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [4, 3]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [Color(1, 1, 0, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bvqyj"]
+_data = {
+"Die": SubResource("Animation_lfenw"),
+"Idle": SubResource("Animation_8xnoe"),
+"Move": SubResource("Animation_u2cvx"),
+"RESET": SubResource("Animation_8yoas")
+}
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_4hebp"]
+normal = Vector2(0, 1)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ug02t"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_s134r"]
+normal = Vector2(1, 0)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_sdlxb"]
+normal = Vector2(-1, 0)
+
+[sub_resource type="Theme" id="Theme_em014"]
+Label/font_sizes/font_size = 24
+Label/fonts/font = ExtResource("1_h3btc")
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_lbh5u")
+
+[node name="Prang" type="CharacterBody2D" parent="."]
+script = ExtResource("1_61c7t")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Prang"]
+shape = SubResource("RectangleShape2D_hwqgf")
+
+[node name="Sprite2D" type="Sprite2D" parent="Prang"]
+modulate = Color(1, 1, 0, 1)
+texture_filter = 1
+scale = Vector2(2, 2)
+texture = ExtResource("1_3nuks")
+hframes = 8
+vframes = 8
+script = ExtResource("3_04cr7")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Prang"]
+libraries = {
+"": SubResource("AnimationLibrary_bvqyj")
+}
+
+[node name="Pickups" type="Node2D" parent="."]
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="WorldBorder" type="StaticBody2D" parent="."]
+
+[node name="Upper" type="CollisionShape2D" parent="WorldBorder"]
+position = Vector2(0, -448)
+shape = SubResource("WorldBoundaryShape2D_4hebp")
+
+[node name="Lower" type="CollisionShape2D" parent="WorldBorder"]
+position = Vector2(0, 448)
+shape = SubResource("WorldBoundaryShape2D_ug02t")
+
+[node name="Left" type="CollisionShape2D" parent="WorldBorder"]
+position = Vector2(-352, 0)
+shape = SubResource("WorldBoundaryShape2D_s134r")
+
+[node name="Right" type="CollisionShape2D" parent="WorldBorder"]
+position = Vector2(352, 0)
+shape = SubResource("WorldBoundaryShape2D_sdlxb")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="HUD" type="Control" parent="Camera2D"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -352.0
+offset_top = -448.0
+offset_right = 352.0
+offset_bottom = 448.0
+theme = SubResource("Theme_em014")
+
+[node name="Score" type="Label" parent="Camera2D/HUD"]
+layout_mode = 1
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 152.0
+offset_bottom = 102.0
+text = "Score
+000000"
+
+[node name="HiScore" type="Label" parent="Camera2D/HUD"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -238.0
+offset_top = 8.0
+offset_right = -6.0
+offset_bottom = 102.0
+grow_horizontal = 0
+text = "High Score
+000000"
+horizontal_alignment = 2
+
+[node name="Lives" type="Control" parent="Camera2D/HUD"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+grow_vertical = 0
+
+[node name="1" type="Sprite2D" parent="Camera2D/HUD/Lives"]
+modulate = Color(1, 1, 0, 1)
+texture_filter = 1
+position = Vector2(34, -34)
+scale = Vector2(2, 2)
+texture = ExtResource("1_3nuks")
+hframes = 8
+vframes = 8
+
+[node name="2" type="Sprite2D" parent="Camera2D/HUD/Lives"]
+modulate = Color(1, 1, 0, 1)
+texture_filter = 1
+position = Vector2(82, -34)
+scale = Vector2(2, 2)
+texture = ExtResource("1_3nuks")
+hframes = 8
+vframes = 8
+
+[node name="3" type="Sprite2D" parent="Camera2D/HUD/Lives"]
+modulate = Color(1, 1, 0, 1)
+texture_filter = 1
+position = Vector2(130, -34)
+scale = Vector2(2, 2)
+texture = ExtResource("1_3nuks")
+hframes = 8
+vframes = 8
+
+[node name="4" type="Sprite2D" parent="Camera2D/HUD/Lives"]
+modulate = Color(1, 1, 0, 1)
+texture_filter = 1
+position = Vector2(178, -34)
+scale = Vector2(2, 2)
+texture = ExtResource("1_3nuks")
+hframes = 8
+vframes = 8
+
+[node name="5" type="Sprite2D" parent="Camera2D/HUD/Lives"]
+modulate = Color(1, 1, 0, 1)
+texture_filter = 1
+position = Vector2(226, -34)
+scale = Vector2(2, 2)
+texture = ExtResource("1_3nuks")
+hframes = 8
+vframes = 8
